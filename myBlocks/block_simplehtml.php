@@ -39,5 +39,24 @@ class block_simplehtml extends block_base {
 		return true;
 	}
 	
-	 function has_config() {return true;}
+	public function html_attributes() {
+		$attributes = parent::html_attributes(); // Get default values
+		$attributes['class'] .= ' block_'. $this->name(); // Append our class to class attribute
+		return $attributes;
+	}
+	
+	function has_config() {return true;}
+	
+	public function hide_header() {
+		return true;
+	}
+	
+	public function instance_config_save($data,$nolongerused =false) {
+		if(get_config('simplehtml', 'Allow_HTML') == '1') {
+			$data->text = strip_tags($data->text);
+		}
+ 
+		// And now forward to the default implementation defined in the parent class
+		return parent::instance_config_save($data,$nolongerused);
+	}
 }
