@@ -59,4 +59,5 @@ class block_simplehtml extends block_base {
 		// And now forward to the default implementation defined in the parent class
 		return parent::instance_config_save($data,$nolongerused);
 	}
+	
 }
