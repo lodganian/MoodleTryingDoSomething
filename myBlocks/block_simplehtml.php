@@ -8,12 +8,18 @@ class block_simplehtml extends block_base {
     // will only be closed after there is another function added in the next section.
 	public function get_content() {
 		if ($this->content !== null) {
-		  return $this->content;
+		    $tmp = $this->title;
+		    $this->instance_config_save($this->content);
+		    $this->title = $tmp;
+		    return $this->content;
 		}
 	 
 		$this->content         =  new stdClass;
 		$this->content->text   = 'The content of our SimpleHTML block!';
-		$this->content->footer = 'Footer here...';
+		global $COURSE;
+		// The other code.
+		$url = new moodle_url('/blocks/simplehtml/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+		$this->content->footer = html_writer::link($url, get_string('addpage', 'block_simplehtml'));
 	 
 		return $this->content;
 	}
@@ -47,9 +53,7 @@ class block_simplehtml extends block_base {
 	
 	function has_config() {return true;}
 	
-	public function hide_header() {
-		return true;
-	}
+	public function hide_header() { return true;}
 	
 	public function instance_config_save($data,$nolongerused =false) {
 		if(get_config('simplehtml', 'Allow_HTML') == '1') {
@@ -61,3 +65,4 @@ class block_simplehtml extends block_base {
 	}
 	
 }
+?>
